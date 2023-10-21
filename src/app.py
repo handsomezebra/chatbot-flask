@@ -1,4 +1,19 @@
 import logging
-from flaskapp import create_app
+import os
+
+from flask import Flask
+
+
+def create_app():
+    if not os.getenv("RUNNING_IN_PRODUCTION"):
+        logging.basicConfig(level=logging.DEBUG)
+
+    app = Flask(__name__)
+
+    import chat  # noqa
+
+    app.register_blueprint(chat.bp)
+
+    return app
 
 app = create_app()

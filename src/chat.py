@@ -6,7 +6,7 @@ import datetime
 import openai
 from flask import Blueprint, Response, current_app, render_template, request, stream_with_context
 
-from .search import search_news, search_text
+from search import search_news, search_text
 
 bp = Blueprint("chat", __name__, template_folder="templates", static_folder="static")
 
