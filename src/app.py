@@ -2,18 +2,15 @@ import logging
 import os
 
 from flask import Flask
+from views import chat_bp
+from models import db
 
 
-def create_app():
-    if not os.getenv("RUNNING_IN_PRODUCTION"):
-        logging.basicConfig(level=logging.DEBUG)
+app = Flask(__name__)
 
-    app = Flask(__name__)
+if not os.getenv("RUNNING_IN_PRODUCTION"):
+    app.logger.setLevel(logging.DEBUG)
 
-    import chat  # noqa
-
-    app.register_blueprint(chat.bp)
-
-    return app
-
-app = create_app()
+app.register_blueprint(chat_bp)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db.init_app(app)
