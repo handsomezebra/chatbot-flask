@@ -10,9 +10,12 @@ max_requests_jitter = 50
 log_file = "-"
 bind = "0.0.0.0:50505"
 
-if not os.getenv("RUNNING_IN_PRODUCTION"):
+if os.getenv("RUNNING_IN_PRODUCTION"):
+    workers = (multiprocessing.cpu_count() * 2) + 1
+    threads = workers
+else:
     reload = True
+    workers = 2
+    threads = 2
 
-workers = (multiprocessing.cpu_count() * 2) + 1
-threads = workers
 timeout = 120
